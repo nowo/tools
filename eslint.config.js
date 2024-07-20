@@ -13,7 +13,7 @@ export default withNuxt(antfu(
         // eslint 忽略文件
         ignores: [
             '.github/workflows/*.yml',
-            'public/tinymce/**',
+            'public/**',
         ],
     },
     {
