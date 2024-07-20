@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS代码工具</title>
+    <script src="static/js/jquery.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+        }
+
+        .section {
+            width: 100%;
+            height: 100vh;
+        }
+
+        .section:nth-child(3n+1) {
+            background-color: #dfffff;
+        }
+
+        .section:nth-child(3n+2) {
+            background-color: #ffafaf;
+        }
+
+        .posfix {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 200px;
+            background-color: #22222255;
+            padding: 5px;
+            box-sizing: border-box;
+        }
+
+        .posfix>a {
+            display: block;
+            color: #fff;
+            line-height: 1.8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="posfix">
+        <a href="#section1">
+            CSS颜色/透明度渐变效果
+        </a>
+        <a href="#section2">
+            CSS盒子阴影效果
+        </a>
+        <a href="#section3">
+            CSS边框圆角效果
+        </a>
+        <a href="#section4">
+            CSS噪音/纹理效果
+        </a>
+        <!-- <a href="#section5">
+            CSS3 剪贴路径(Clip-path)
+        </a> -->
+
+    </div>
+    <section id="section1" class="section">
+        <iframe src="css-generator.html" frameborder="0"></iframe>
+    </section>
+    <section id="section2" class="section">
+        <iframe src="box-shadow.html" frameborder="0"></iframe>
+    </section>
+
+    <section id="section3" class="section">
+        <iframe src="border-radius.html" frameborder="0"></iframe>
+    </section>
+
+    <section id="section4" class="section">
+        <iframe src="noise-texture.html" frameborder="0"></iframe>
+    </section>
+    <!-- <section id="section5" class="section">
+        <iframe src="clip_path.html" frameborder="0"></iframe>
+    </section> -->
+</body>
+
+</html>

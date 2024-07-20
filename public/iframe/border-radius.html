@@ -1,0 +1,217 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>CSS边框圆角效果代码工具</title>
+
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.min.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/colorpicker.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/layout.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/all.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/gradients.css'>
+
+    <script src='static/js/jquery-1.8.3.min.js'></script>
+    <script src='static/js/jquery-ui-1.9.1.min.js'></script>
+    <script src='static/js/colorpicker.js'></script>
+    <script src='static/js/eye.js'></script>
+    <script src='static/js/layout.js'></script>
+    <script src='static/js/utils.js'></script>
+    <script src='static/js/jquery.cookie.js'></script>
+    <script src='static/js/copyText.js'></script>
+    <script src='static/js/jquery.main.js'></script>
+    <script src='static/js/colorFunctions.js'></script>
+    <script src='static/js/jquery.zclip.min.js'></script>
+
+    <script src='static/js/borderRadius.js'></script>
+
+</head>
+
+<body>
+
+
+    <div id="wrapper" class="border">
+        <section class="top_info">
+            <div class="tle">
+                CSS边框圆角效果代码工具
+            </div>
+
+            <div class="intro">
+                <strong>来源：</strong><br>
+                著名国外网站————<strong>CSSmatic</strong>：<a href="https://www.cssmatic.com/border-radius"
+                    target="_blank"><strong>https://www.cssmatic.com/border-radius</strong></a><br>
+                CSS边框圆角效果代码工具：<a href="http://tools.jb51.net/code/css_border_radius"
+                    target="_blank"><strong>http://tools.jb51.net/code/css_border_radius</strong></a><br>
+            </div>
+        </section>
+        <div class="twocolumns">
+            <div class="left-column">
+                <div class="box">
+                    <div class="holder">
+                        <div class="frame">
+                            <div class="setting-block">
+                                <div class="row">
+                                    <label for="all-corners">所有四个角</label>
+                                    <label class="align-right" for="all-corners">px</label>
+                                    <div class="text-1">
+                                        <input id="all-corners" type="text" value="10">
+                                    </div>
+                                </div>
+                                <div id="slider-all-corners"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 41.5%;"></a>
+                                </div>
+                            </div>
+                            <div class="setting-block">
+                                <div class="row">
+                                    <label for="top-left">左上角</label>
+                                    <label class="align-right" for="top-left">px</label>
+                                    <div class="text-1">
+                                        <input id="top-left" type="text" value="10">
+                                    </div>
+                                </div>
+                                <div id="slider-top-left"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 44%;"></a>
+                                </div>
+                                <div class="row mtop15">
+                                    <label for="top-right">右上角</label>
+                                    <label class="align-right" for="top-right">px</label>
+                                    <div class="text-1">
+                                        <input id="top-right" type="text" value="10">
+                                    </div>
+                                </div>
+                                <div id="slider-top-right"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 36.5%;"></a>
+                                </div>
+                                <div class="row mtop15">
+                                    <label for="bottom-left">左下角</label>
+                                    <label class="align-right" for="bottom-left">px</label>
+                                    <div class="text-1">
+                                        <input id="bottom-left" type="text" value="10">
+                                    </div>
+                                </div>
+                                <div id="slider-bottom-left"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 41.5%;"></a>
+                                </div>
+                                <div class="row mtop15">
+                                    <label for="bottom-right">右下角</label>
+                                    <label class="align-right" for="bottom-right">px</label>
+                                    <div class="text-1">
+                                        <input id="bottom-right" type="text" value="10">
+                                    </div>
+                                </div>
+                                <div id="slider-bottom-right"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 41.5%;"></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="box">
+                    <div class="holder">
+                        <div class="frame">
+                            <div class="setting-block">
+                                <div class="row">
+                                    <label for="border-width">Border 宽度</label>
+                                    <label class="align-right" for="border-width">px</label>
+                                    <div class="text-1">
+                                        <input id="border-width" type="text" value="0">
+                                    </div>
+                                </div>
+                                <div id="slider-border-width"
+                                    class="slider-bar large ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all">
+                                    <a class="ui-slider-handle ui-state-default ui-corner-all" href="#"
+                                        style="left: 5.5%;"></a>
+                                </div>
+                            </div>
+                            <div class="setting-block">
+                                <div class="row">
+                                    <label for="vertical-length">Border 类型</label>
+                                    <div class="text-1">
+                                        <select id="select-border">
+                                            <option value="solid">solid</option>
+                                            <option value="dotted">dotted</option>
+                                            <option value="dashed">dashed</option>
+                                            <option value="double">double</option>
+                                            <option value="groove">groove</option>
+                                            <option value="ridge">ridge</option>
+                                            <option value="inset">inset</option>
+                                            <option value="outset">outset</option>
+                                            <option value="inherit">inherit</option>
+                                            <option value="hidden">hidden</option>
+                                            <option value="none">none</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <label for="br-color">Border颜色</label>
+                                    <div class="text-2">
+                                        <input id="br-color" type="text" value="#000000">
+                                    </div>
+                                    <a id="br-color-button" class="btn-color color-3" href="javascript:;"
+                                        style="background-color: rgb(33, 112, 122);">
+                                        <span>color</span>
+                                    </a>
+                                </div>
+                                <div class="row">
+                                    <label for="br-background-color">背景色</label>
+                                    <div class="text-2">
+                                        <input id="br-background-color" type="text" value="#e7a61a">
+                                    </div>
+                                    <a id="br-background-color-button" class="btn-color color-4" href="javascript:;"
+                                        style="background-color: rgb(28, 230, 149);">
+                                        <span>color</span>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="box-wrap">
+                    <div id="border-radius-code" class="content" contenteditable="true">
+                        <div>border-radius: 88px 73px 83px 83px;</div>
+                        <div>-moz-border-radius: 88px 73px 83px 83px;</div>
+                        <div>-webkit-border-radius: 88px 73px 83px 83px;</div>
+                        <div>border: 11px solid #21707a;</div>
+                    </div>
+
+                    <div id="border-radius-panel"
+                        style="border-radius: 88px 73px 83px 83px; border: 11px solid rgb(33, 112, 122); background-color: rgb(28, 230, 149);">
+                        <div id="border-radius-object"><a id="copy-text-input" class="btn-link-1"
+                                href="javascript:;">复制文本</a>
+                            <div class="zclip" id="zclip-ZeroClipboardMovie_1"
+                                style="position: absolute; left: 96px; top: 51px; width: 200px; height: 37px; z-index: 99;">
+                                <embed id="ZeroClipboardMovie_1" src="js/ZeroClipboard.swf" loop="false" menu="false"
+                                    quality="best" bgcolor="#ffffff" width="200" height="37" name="ZeroClipboardMovie_1"
+                                    align="middle" allowscriptaccess="always" allowfullscreen="false"
+                                    type="application/x-shockwave-flash"
+                                    pluginspage="http://www.macromedia.com/go/getflashplayer"
+                                    flashvars="id=1&amp;width=200&amp;height=37" wmode="transparent">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+</body>
+
+</html>

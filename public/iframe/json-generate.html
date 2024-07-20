@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON生成器 - 生成随机数据的工具</title>
+    <link rel="stylesheet" href="static/css/json-styles.css">
+</head>
+
+<body>
+    <header role="banner">
+        <h1><a href="javascript:location.reload();" class="branding">JSON生成器</a></h1>
+        <div class="controls"><a id="generate" href="#generate" class="btn">生成</a><a id="reset-ui" href="#"
+                title="Resets template and output fields" class="btn btn-reset">重置</a></div>
+        <nav role="navigation">
+            <ul>
+                <!-- <li><a href="https://flattr.com/@vazha.om" target="_blank" class="donate"><span>&hearts;</span>Donate
+                        via Flattr</a></li>
+                <li><a href="https://next.json-generator.com" target="_blank" class="try-beta">Try the next version!</a>
+                </li> -->
+                <li><a href="#" data-tab="help-tab" class="show-sidebar"><span class="ico-faq"></span>帮助</a></li>
+                <!-- <li><a href="https://app.json-generator.com/feedback" target="_blank"><span
+                            class="ico-letter"></span>Feedback</a></li> -->
+            </ul>
+        </nav>
+    </header>
+    <div role="main" class="viewport">
+        <section class="box template-box">
+            <div id="template-editor"></div>
+            <div class="handle"></div>
+        </section>
+        <section class="box result-box">
+            <h2 class="wait-magic">
+                <span class="ico-magic"></span><br>点击 "生成" 按钮<br> 生成 JSON 内容
+            </h2><code id="result-editor"></code><span class="badge badge-code-size"></span>
+            <ul id="actions">
+                <li class="a-generated"><a id="copy-code" href="#" title="复制JSON到剪贴板">复制 JSON</a></li>
+                <li class="a-uploaded"><a id="copy-url" href="#" title="Copy uploaded JSON file URL to clipboard">Copy
+                        JSON file URL</a></li>
+                <li class="a-generated"><a id="download-code" href="#" download="generated.json" title="下载 JSON 文件">下载
+                        JSON 文件</a></li>
+                <li class="a-generated"><span>缩进: <select id="json-indent" title="选择 JSON 缩进">
+                            <option value="0">紧凑</option>
+                            <option value="2" selected>2 tab 符</option>
+                            <option value="3">3 tab 符</option>
+                            <option value="4">4 tab 符</option>
+                        </select></span></li>
+            </ul>
+        </section>
+        <aside><a href="#" class="close">&times;</a>
+            <div class="scroll-container">
+                <article class="help-tab">
+                    <h2>帮助</h2>
+                    <h3>函数方法列表</h3>
+                    <dl>
+                        <dt><a href="#random">random</a><small class="a-text">随机取值</small></dt>
+                        <dd id="random">
+                            <p>从传递的参数列表中返回随机项目(参数中随机返回一个)</p>
+                            <h4>使用</h4>
+                            <pre><code>{{random([arg1], [arg2] ... [argN])}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-*">*</span>
+                        </dd>
+                        <dt><a href="#repeat">repeat</a><small class="a-text">重复、遍历</small></dt>
+                        <dd id="repeat">
+                            <p>指定数组项的重复次数。可重复数组必须只包含两个项目：第一个是重复标签，第二个是必须被重复的项目。如果没有指定参数，项目将被重复0到10次。如果指定了最小参数，项目将被重复该次数。如果指定了两个参数，项目将在指定的范围内被重复。
+                            </p>
+                            <h4>使用</h4>
+                            <pre><code>{{repeat([min], [max])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>min <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最小数字。默认为0。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>max <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最大数字。默认为10。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-number">Number</span>
+                        </dd>
+                        <dt><a href="#index">index</a><small class="a-text">repeat后，数组的下标</small></dt>
+                        <dd id="index">
+                            <p>当前被遍历对象的索引，从0开始</p>
+                            <h4>使用</h4>
+                            <pre><code>{{index([startFrom])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>startFrom <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>索引将从这个值开始。默认值为0。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-number">Number</span>
+                        </dd>
+                        <dt><a href="#integer">integer</a><small class="a-text">随机整数</small></dt>
+                        <dd id="integer">
+                            <p>指定范围内的随机整数。可以是负数。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{integer([min], [max], [format])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>min <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最小数字。默认为0。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>max <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最大数字。默认为10。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>format <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>String 数字格式。更多信息请访问<a href="http://adamwdraper.github.io/Numeral-js/"
+                                                target="_blank">Numeral.js</a>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-number">Number</span><span
+                                class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#floating">floating</a><small class="a-text">随机浮点数</small></dt>
+                        <dd id="floating">
+                            <p>指定范围内的随机浮点数。如果最小参数是float，生成的数字也将是小数点相同的float。可以是负数。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{floating([min], [max], [fixed], [format])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>min <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最小数字。默认为0。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>max <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>范围内的最大数字。默认为10。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>fixed <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>Number 小数点的数量。默认为4。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>format <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>String 数字格式。更多信息请访问<a href="http://adamwdraper.github.io/Numeral-js/"
+                                                target="_blank">Numeral.js</a>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-number">Number</span><span
+                                class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#bool">bool</a><small class="a-text">布尔值</small></dt>
+                        <dd id="bool">
+                            <p>随机的布尔值。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{bool()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-boolean">Boolean</span>
+                        </dd>
+                        <dt><a href="#date">date</a><small class="a-text">日期</small></dt>
+                        <dd id="date">
+                            <p>指定范围内的随机日期。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{date([min], [max], [format])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>min <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-date">Date</span></td>
+                                        <td>该范围内的最小日期。默认是new Date(1970, 0, 1)。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>max <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-date">Date</span></td>
+                                        <td>该范围内的最大日期。默认是new Date()--当前时间。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>format <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>日期格式。更多信息请访问 <a href="http://github.com/hogart/datef"
+                                                target="_blank">datef</a>.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-number">Number</span>
+                        </dd>
+                        <dt><a href="#lorem">lorem</a><small class="a-text">随机文本</small></dt>
+                        <dd id="lorem">
+                            <p>随机的<a href="http://www.lipsum.com/" target="_blank">Lorem Ipsum</a>文本。随机返回一段文本内容。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{lorem([count], [units])}}</code></pre>
+                            <p>paragraphs
+                                words
+                                bytes
+                                lists</p>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>count <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>生成单位的数量。默认为1。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>units <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>单位类型。可以是单词、句子或段落。默认为句子。<br>
+                                            paragraphs(段落)、words(单词)、bytes(字节)、lists(列表)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#objectId">objectId</a><small class="a-text">字符串id</small></dt>
+                        <dd id="objectId">
+                            <p>MongoDB的对象的全局唯一标识符。例如：62201b86ed826766088820b3</p>
+                            <h4>使用</h4>
+                            <pre><code>{{objectId()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#guid">guid</a><small class="a-text">guid</small></dt>
+                        <dd id="guid">
+                            <p>随机 <a href="http://en.wikipedia.org/wiki/GUID" target="_blank">globally unique
+                                    identifier</a>.<br>
+                                GUID 的格式为“xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx”，其中每个 x 是 0-9 或 a-f
+                                范围内的一个十六进制数。例如：6F9619FF-8B86-D011-B42D-00C04FC964FF 即为有效的 GUID 值。
+                            </p>
+                            <h4>使用</h4>
+                            <pre><code>{{guid()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#custom-function">custom function</a><small class="a-text">自定义函数</small></dt>
+                        <dd id="custom-function">
+                            <p>你可以创建你自己的函数，返回任何值。这个关键字包含当前生成的对象，所以你可以引用以前的现有字段，如例子所示。</p>
+                            <h4>使用</h4>
+                            <pre><code>function (tags, index) {
+  // Your code 
+}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>tags</td>
+                                        <td><span class="type-hint type-hint-object">Object</span></td>
+                                        <td>具有生成方法的对象，其名称与标签相同。</td>
+                                    </tr>
+                                    <tr>
+                                        <td>index</td>
+                                        <td><span class="type-hint type-hint-number">Number</span></td>
+                                        <td>当前克隆对象的索引，从0开始。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-*">*</span>
+                        </dd>
+                        <dt><a href="#firstName">firstName</a><small class="a-text">随机名字</small></dt>
+                        <dd id="firstName">
+                            <p>如果没有指定性别，则为随机的人名，有两种性别。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{firstName([gender])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>gender <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>名字的性别。可以是男性或女性。<br>
+                                            male(男)、female(女)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#gender">gender</a><small class="a-text">性别，firstName后使用</small></dt>
+                        <dd id="gender">
+                            <p>以前生成的人的性别。必须是在包含firstName标签的字段之后。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{gender()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#surname">surname</a><small class="a-text">随机姓氏</small></dt>
+                        <dd id="surname">
+                            <p>随机人的姓氏。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{surname()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#company">company</a><small class="a-text">公司名字</small></dt>
+                        <dd id="company">
+                            <p>随机公司的名称</p>
+                            <h4>使用</h4>
+                            <pre><code>{{company()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#email">email</a><small class="a-text">邮箱</small></dt>
+                        <dd id="email">
+                            <p>根据前面调用的名字、姓氏和公司来生成电子邮件。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{email([random])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>random <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-boolean">Boolean</span></td>
+                                        <td>如果为真，将生成随机的电子邮件地址。默认为假。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#phone">phone</a><small class="a-text">随机号码</small></dt>
+                        <dd id="phone">
+                            <p>生成随机电话号码。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{phone([format])}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>format <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-string">String</span></td>
+                                        <td>包含x个字母的格式字符串。默认为"(xxx) xxx-xxxx"。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#country">country</a><small class="a-text">国家名称</small></dt>
+                        <dd id="country">
+                            <p>随机国家名称。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{country()}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>abbreviation <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-boolean">Boolean</span></td>
+                                        <td>如果为true，则返回国家名称的缩写；false返回全名。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#countriesList">countriesList</a><small class="a-text">国家列表</small></dt>
+                        <dd id="countriesList">
+                            <p>返回205个独特国家的列表，而不是传递的字符串。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{countriesList()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-array">Array</span>
+                        </dd>
+                        <dt><a href="#state">state</a><small class="a-text">洲、省</small></dt>
+                        <dd id="state">
+                            <p>随机的美国州名。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{state()}}</code></pre>
+                            <h4>属性</h4>
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>参数</th>
+                                        <th>类型</th>
+                                        <th>介绍</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>abbreviation <small>(可选)</small></td>
+                                        <td><span class="type-hint type-hint-boolean">Boolean</span></td>
+                                        <td>如果为true，则返回（洲、省）的缩写；false返回全名。</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#city">city</a><small class="a-text">城市名称</small></dt>
+                        <dd id="city">
+                            <p>随机美国城市名称</p>
+                            <h4>使用</h4>
+                            <pre><code>{{city()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                        <dt><a href="#street">street</a><small class="a-text">街道名称。</small></dt>
+                        <dd id="street">
+                            <p>随机的美国街道名称。</p>
+                            <h4>使用</h4>
+                            <pre><code>{{street()}}</code></pre>
+                            <h4>返回</h4><span class="type-hint type-hint-string">String</span>
+                        </dd>
+                    </dl>
+
+                    <h3>使用方法</h3>
+                    <p>JSON
+                        生成器有一个方便的语法。你可以为你在左边框中看到的模板指定JavaScript对象。它将被无限深入地克隆。字段可以有任何名称和值，但它必须是有效的JavaScript。值，是字符串，可以包含一个或多个模板标签。当你点击
+                        "生成 "时，数据源对象将被复制几次，标签的位置将被插入随机值。</p>
+                    <p>你可以通过点击 "复制到剪贴板 "将生成的JSON复制到剪贴板上。你也可以通过点击 "下载 "按钮下载生成的文件。生成的JSON大小出现在有生成数据的领域的右上方。</p>
+                    <p>你可以从下拉列表中为生成的JSON选择缩进。它的值可以是 "紧凑"、2 tab 符、3 tab 符和4 tab 符。</p>
+                    <p>JSON Generator 会记住您在 localStorage 中的最后一个模板。如果您想重置它，请点击 "重置 "按钮来重置模板和用户界面。</p>
+                </article>
+            </div>
+        </aside>
+    </div>
+    <footer>
+        <span class="creator">原网站链接：<a href="https://json-generator.com/"
+                target="_blank">https://json-generator.com/</a></span>
+    </footer>
+    <script src="static/js/json-require.js" data-main="static/js/json-app"></script>
+    <div id="fb-root"></div>
+</body>
+
+</html>

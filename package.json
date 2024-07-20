@@ -1,0 +1,81 @@
+{
+    "name": "nuxt-web-template",
+    "type": "module",
+    "private": true,
+    "packageManager": "pnpm@8.14.1",
+    "scripts": {
+        "dev": "nuxi dev",
+        "dev:pwa": "VITE_PLUGIN_PWA=true nuxi dev",
+        "build": "nuxi build",
+        "build:pro": "nuxi build --dotenv .env.production",
+        "generate": "nuxi generate",
+        "postinstall": "nuxi prepare",
+        "start": "node .output/server/index.mjs",
+        "start:generate": "npx serve .output/public",
+        "lint": "eslint . --fix",
+        "lint-view": "eslint --inspect-config",
+        "prepare": "husky install",
+        "commit": "git-cz",
+        "typecheck": "vue-tsc --noEmit"
+    },
+    "dependencies": {
+        "@nowo/utils": "npm:@jsr/nowo__utils@^0.0.2",
+        "@prisma/client": "^5.13.0",
+        "@tinymce/tinymce-vue": "^5",
+        "element-plus": "^2.7.4",
+        "formidable": "^3.5.1",
+        "jose": "^5.3.0",
+        "jsonwebtoken": "^9.0.2",
+        "nuxt-swiper": "^1.2.2",
+        "vue-draggable-plus": "^0.5.0"
+    },
+    "devDependencies": {
+        "@antfu/eslint-config": "^2.19.0",
+        "@element-plus/nuxt": "^1.0.9",
+        "@iconify-json/carbon": "^1.1.32",
+        "@iconify-json/ep": "^1.1.15",
+        "@iconify-json/flag": "^1.1.53",
+        "@iconify-json/mdi": "^1.1.66",
+        "@iconify-json/twemoji": "^1.1.15",
+        "@nuxt/eslint": "^0.3.12",
+        "@nuxtjs/color-mode": "^3.4.1",
+        "@nuxtjs/i18n": "^8.3.1",
+        "@pinia/nuxt": "^0.5.1",
+        "@types/jsonwebtoken": "^9.0.6",
+        "@unocss/eslint-config": "^0.61.0",
+        "@unocss/nuxt": "^0.61.0",
+        "@vite-pwa/nuxt": "^0.8.1",
+        "@vueuse/nuxt": "^10.9.0",
+        "commitizen": "^4.3.0",
+        "cz-git": "^1.9.0",
+        "eslint": "^9.2.0",
+        "husky": "^9.0.11",
+        "lint-staged": "^15.2.2",
+        "nuxt": "^3.12.3",
+        "nuxt-file-storage": "^0.2.2",
+        "nuxt-particles": "^0.3.0",
+        "pinia": "^2.1.7",
+        "prisma": "^5.13.0",
+        "sass": "^1.77.1",
+        "typescript": "^5.4.5",
+        "vue-tsc": "^2.0.17"
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-git"
+        }
+    },
+    "husky": {
+        "hooks": {
+            "pre-commit": "lint-staged"
+        }
+    },
+    "lint-staged": {
+        "*.vue": [
+            "eslint --fix"
+        ],
+        "*.{js,jsx,ts,tsx}": [
+            "eslint --fix"
+        ]
+    }
+}

@@ -1,0 +1,351 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>CSS颜色/透明度渐变效果代码工具</title>
+
+    <link rel='stylesheet' type='text/css' href='static/css/jquery-ui.min.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/colorpicker.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/layout.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/all.css'>
+    <link rel='stylesheet' type='text/css' href='static/css/gradients.css'>
+
+    <script src='static/js/jquery-1.8.3.min.js'></script>
+    <script src='static/js/jquery-ui-1.9.1.min.js'></script>
+    <script src='static/js/colorpicker.js'></script>
+    <script src='static/js/eye.js'></script>
+    <script src='static/js/layout.js'></script>
+    <script src='static/js/utils.js'></script>
+    <script src='static/js/jquery.cookie.js'></script>
+    <script src='static/js/copyText.js'></script>
+    <script src='static/js/jquery.main.js'></script>
+    <script src='static/js/colorFunctions.js'></script>
+    <script src='static/js/jquery.zclip.min.js'></script>
+
+    <script src='static/js/gradient.js'></script>
+    <script src='static/js/gradientEvents.js'></script>
+
+</head>
+
+<body>
+
+
+    <div id="wrapper" class="gradient">
+        <section class="top_info">
+            <div class="tle">
+                CSS颜色/透明度渐变效果代码工具
+            </div>
+            <div class="intro">
+                <strong>来源：</strong><br>
+                著名国外网站————<strong>CSSmatic</strong>：<a href="https://www.cssmatic.com/gradient-generator"
+                    target="_blank"><strong>https://www.cssmatic.com/gradient-generator</strong></a><br>
+                CSS颜色/透明度渐变效果代码工具————<strong>脚本之家</strong>：<a href="http://tools.jb51.net/code/css_generator"
+                    target="_blank"><strong>http://tools.jb51.net/code/css_generator</strong></a><br>
+            </div>
+        </section>
+
+        <div class="gradient-block">
+            <div class="left-column">
+                <div class="holder">
+                    <div class="scroll-container bottom-separator">
+                        <div class="holder">
+                            <ul class="presets-list">
+                                <li>
+                                    <div id="load-grad-1" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-2" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-3" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-4" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-5" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-6" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-7" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-8" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-9" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-10" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-11" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-12" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-13" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-14" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-15" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-16" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-17" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-18" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-19" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-20" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-21" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-22" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-23" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-24" class="load-gradient"></div>
+                                </li>
+                                <li>
+                                    <div id="load-grad-25" class="load-gradient"></div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="gradient-container">
+                        <div class="gradient-panel gradient-background">
+                            <div class='stop-markers-opacity' title='点击添加一个不透明度色标'></div>
+                            <div id="gradient-editor"></div>
+                            <div class='stop-markers-color' title='点击添加一个色标'></div>
+                        </div>
+                        <a class="btn-reverse" title="反转颜色" href="javascript:;">反转颜色</a>
+                    </div>
+                    <form action="#">
+                        <div class="two-cols bottom-separator">
+                            <div class="col">
+                                <div class="holder">
+                                    <div class="frame">
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="opacity">不透明度</label>
+                                                <div class="text-1">
+                                                    <input id="opacity" type="text" value="100">
+                                                </div>
+                                            </div>
+                                            <div id="opacity-value-slider-bar" class="slider-bar"></div>
+                                        </div>
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="opacity-location">位置</label>
+                                                <div class="text-1">
+                                                    <input id="opacity-location" type="text" value="100">
+                                                </div>
+                                                <label class="align-right" for="opacity-location">%</label>
+                                            </div>
+                                            <div id="opacity-location-slider-bar" class="slider-bar"></div>
+                                        </div>
+                                        <a id="opacity-delete-button" class="btn-link-1"
+                                            href="javascript:;">删除选中的不透明度色标</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="holder">
+                                    <div class="frame">
+                                        <div class="setting-block">
+                                            <div class="row color-row">
+                                                <label for="color">颜色</label>
+                                                <div class="text-2">
+                                                    <input pattern="#[a-zA-Z0-9]{6}" id="color-value-hex"
+                                                        class="color-label" type="text" value="#2e4a75">
+                                                </div>
+                                                <a id="color-value-button" class="btn-color"
+                                                    href="javascript:;"><span>Color</span></a>
+                                            </div>
+                                        </div>
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="color-location">位置</label>
+                                                <div class="text-1">
+                                                    <input id="color-location" type="text" value="100">
+                                                </div>
+                                                <label class="align-right" for="color-location">%</label>
+                                            </div>
+                                            <div id="color-location-slider-bar" class="slider-bar"></div>
+                                        </div>
+                                        <a id="color-delete-button" class="btn-link-1" href="javascript:;">删除选中的色标</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="box">
+                            <div class="holder">
+                                <div class="frame">
+                                    <div class="col">
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="hue">色调</label>
+                                                <div class="text-1">
+                                                    <input id="hue" type="text" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="slider-bar hue-bar"></div>
+                                        </div>
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="saturation">饱和度</label>
+                                                <div class="text-1">
+                                                    <input id="saturation" type="text" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="slider-bar saturation-bar"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="setting-block">
+                                            <div class="row">
+                                                <label for="lightness">明亮度</label>
+                                                <div class="text-1">
+                                                    <input id="lightness" type="text" value="0">
+                                                </div>
+                                            </div>
+                                            <div class="slider-bar lightness-bar"></div>
+                                        </div>
+                                        <a id="reset-button" class="btn-link-1" href="javascript:;">重置</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="save-block">
+
+
+
+                            <input id="save-cookie-input" type="text" onclick="this.value='';" value="保存你的预设"
+                                onfocus="this.select()" onblur="this.value=!this.value?'保存你的预设':this.value;">
+                            <a id="save-cookie-btn" href="javascript:;" class="btn-save">保存</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="right-column">
+                <div class="preview-block">
+                    <div id="gradient-preview" class="preview-box gradient-background"></div>
+                    <a class="btn-horizontal" href="javascript:;">水平方向</a>
+                    <a class="btn-vertical" href="javascript:;">垂直方向</a>
+                    <a class="btn-diagonal-1" href="javascript:;">对角线方向</a>
+                    <a class="btn-diagonal-2" href="javascript:;">对角线方向</a>
+                    <a class="btn-radial" href="javascript:;">径向方向</a>
+                </div>
+                <div class="box">
+                    <div class="holder">
+                        <div class="frame">
+                            <form action="#">
+                                <div class="option-panel">
+                                    <span>CSS</span>
+                                    <span>SASS</span>
+                                    <div id="css-sass-button" class="slider-block">
+                                        <span class="dot selected"></span>
+                                        <div class="slider-small">
+                                            <a class="knob left-pos" href="javascript:;">knob</a>
+                                        </div>
+                                        <span class="dot"></span>
+                                    </div>
+                                </div>
+                                <div class="block">
+                                    <div class="scroll-container">
+                                        <div id="css-code-content" class="holder" contenteditable>
+                                        </div>
+                                    </div>
+
+                                    <a href="javascript:;" id="copy-text-input" class="btn-link-1 opacity-0">复制文本</a>
+
+                                </div>
+                                <div class="bottom-panel bottom-separator">
+                                    <div class="col">
+                                        <label for="color-format">颜色格式</label>
+                                        <select id="color-format">
+                                            <option value="hex">hex</option>
+                                            <option value="hsl">hsl</option>
+                                            <option value="hsla">hsla</option>
+                                            <option value="rgb">rgb</option>
+                                            <option value="rgba">rgba</option>
+                                        </select>
+                                    </div>
+                                    <div class="col">
+                                        <span>注释</span>
+                                        <div id="comments-button" class="slider-block marked">
+                                            <div class="slider-small"><a class="knob left-pos"
+                                                    href="javascript:;">knob</a></div>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <span>IE9 支持</span>
+                                        <div id="ie9-button" class="slider-block marked">
+                                            <div class="slider-small"><a class="knob left-pos"
+                                                    href="javascript:;">knob</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="ie-support-info" class="bottom-panel bottom-separator" style="display: none;">
+                                    <p>Support for full multi-stop gradients with IE9 (using SVG).</p>
+                                    <p>
+                                        Add a "gradient" class to all your elements that have a gradient, <br>and add
+                                        the following override to your HTML to complete the IE9 support:
+                                    </p>
+                                    <code>
+                                &lt;!--[if gte IE 9]<br>
+                                &lt;style type="text/css"&gt;<br>
+                                  .gradient {<br>
+                                     filter: none;<br>
+                                  }<br>
+                                &lt;/style&gt;<br>
+                                &lt;![endif]--&gt;<br>
+                            </code>
+                                </div>
+                                <div class="buttons-block">
+                                    <a href="javascript:;" id="import-css-button" class="btn-link-2">导入CSS</a>
+                                </div>
+                                <div id="import-css-panel" class="bottom-panel bottom-separator" style="display: none;">
+                                    <p>输入现有渐变CSS用于导入。<br>
+                                        使用 Mozilla, Webkit, Opera, W3C 或 IE 格式。
+                                    </p>
+                                    <textarea id="import-css-area"></textarea>
+                                    <div class="dialog-button-panel">
+                                        <a href="javascript:;" id="import-css-button-ok" class="btn-link-2">接受</a>
+                                        <a href="javascript:;" id="import-css-button-cancel" class="btn-link-2">取消</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="clear:both"></div>
+
+
+    </div>
+    <div id="opacity-gradient" class="slider-bar large" style="display: none;"></div>
+
+</body>
+
+</html>

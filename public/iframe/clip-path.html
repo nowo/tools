@@ -1,0 +1,309 @@
+<html lang="zh-CN" class="-webkit- js csstransforms3d csstransitions">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<link rel="stylesheet" href="static/css/clip-path.css">
+	<script type="text/javascript" src="static/js/jquery.min.js"></script>
+	<title>CSS3 剪贴路径（Clip-path）</title>
+
+
+</head>
+
+<body>
+	<style>
+		.shadowboard {
+			opacity: 0.25;
+		}
+
+		#box .shadowboard,
+		#box .clipboard {
+			border-radius: var(--bor);
+		}
+
+		.demo .linebox {
+
+			background-image: linear-gradient(to right, transparent calc(50% - 1px), #b0ecff 1px, transparent calc(50% + 1px), transparent calc(100% - 1px), #222 1px), linear-gradient(to bottom, transparent calc(50% - 1px), #b0ecff 1px, transparent calc(50% + 1px), transparent calc(100% - 1px), #222 1px);
+			background-size: 10% 10%;
+			position: absolute;
+			top: 10px;
+			left: 10px;
+			bottom: 10px;
+			right: 10px;
+		}
+
+		.demo .linebox::before {
+			content: '';
+			width: 1px;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			background-color: #222;
+		}
+
+		.demo .linebox::after {
+			content: '';
+			width: 100%;
+			position: absolute;
+			top: 1px;
+			left: 0;
+			height: 1px;
+			background-color: #222;
+		}
+
+		#GENERATOR_DIV #EFFECTION_DIV {
+			width: 50%;
+		}
+
+		#GENERATOR_DIV #PARAMETER_DIV {
+			width: 50%;
+		}
+
+		.clippath .demo {
+			overflow: auto;
+			padding-bottom: 10px;
+			margin-bottom: 10px;
+		}
+
+		.clippath .demo .arrow {
+			position: absolute;
+			right: 0;
+		}
+
+		.clippath .demo .box {
+			background-color: #fafafa;
+		}
+
+		.inp_box {
+			display: flex;
+			flex-wrap: wrap;
+			padding: 15px;
+		}
+
+		.inp_box>* {
+			/* width: calc(50% - 20px); */
+			margin: 8px 10px;
+			font-size: 16px;
+		}
+
+		.inp_box>label {
+			min-width: auto;
+			display: flex;
+			align-items: center;
+			border: 0;
+			box-shadow: none;
+			padding: 0;
+			line-height: 1;
+			color: #555;
+
+		}
+
+		.inp_box>label:hover {
+			background: none;
+		}
+
+		.inp_box>label>span {
+			width: 80px;
+			text-align: left;
+		}
+
+		.inp_box>label>input {
+			padding: 5px;
+			width: 60px;
+			flex: 1;
+		}
+
+		.inp_box .inp_btn {
+			width: 110px;
+			height: 100%;
+			min-height: 30px;
+			border: 1px solid #aaa;
+			border-radius: 5px;
+			cursor: pointer;
+			transition: all 0.5s;
+		}
+
+		.inp_box .inp_btn:hover {
+			box-shadow: 0 0 10px #777;
+		}
+
+		.inp_radius .inp_borval {
+			width: 60px;
+			padding: 3px;
+			margin-left: 10px;
+			flex: none;
+			box-shadow: none;
+			border: 1px solid #777;
+			border-radius: 5px;
+			font-size: 1.1rem;
+			text-align: center;
+		}
+
+		.inp_radius .inp_borval:hover,
+		.inp_radius .inp_borval:focus {
+			background: none !important;
+			box-shadow: none !important;
+			color: #222 !important;
+		}
+	</style>
+
+	<style id="custom_background">
+		.clipboard,
+		.shadowboard {
+			background-image: url(static/image/pittsburgh.jpg);
+		}
+	</style>
+	<div class="clippath text-left" id="CLIPPATH">
+
+		<div class="demo" style="--bor:0;">
+			<h2 class="arrow">CSS3 剪贴路径（Clip-path）在线生成器</h2>
+			<div id="box" class="box">
+				<div class="linebox"></div>
+				<div class="shadowboard">
+				</div>
+				<div class="clipboard">
+				</div>
+				<div class="handles">
+				</div>
+			</div>
+		</div>
+		<div id="GENERATOR_DIV">
+			<div id="EFFECTION_DIV">
+				<div class="inp_box">
+					<label>
+						<span>宽(px)</span>
+						<input class="inp_wid" onblur="this.value=this.value.replace(/^(0+)|[^\d]+/g, '')" value="370">
+					</label>
+					<label>
+						<span>高(px)</span>
+						<input class="inp_hei" onblur="this.value=this.value.replace(/^(0+)|[^\d]+/g, '')" value="370">
+					</label>
+					<div>
+						<button class="inp_btn">确定</button>
+					</div>
+				</div>
+				<div class="inp_radius">
+
+					<div class="grid panel flex fade-content">
+						<h2 style="font-size:18px;">圆角(px)</h2>
+						<input class="inp_bor" type="range" step="1" min="0" max="1000" value="0" />
+						<input class="inp_borval" type="text" min="0" max="1000" value="0" />
+					</div>
+				</div>
+				<div class="options">
+					<div class="grid panel fade-content">
+						<h2 style="font-size:18px;">显示路径外图像</h2>
+						<input type="checkbox" id="shadowboard-toggle" name="prefix" checked="checked">
+						<label for="shadowboard-toggle" class="joined" style="min-width:100px;"></label>
+					</div>
+					<div class="grid panel flex fade-content">
+						<h2 style="font-size:18px;">CSS前缀</h2>
+						<input type="checkbox" checked="checked" id="webkit" value="5" name="prefix">
+						<label for="webkit">webkit</label>
+					</div>
+				</div>
+				<div class="css-code code fade-content" contenteditable="true">
+					<code style="display: none;" class="show">border-radius:<span class="borrr">0</span>px;</code>
+					<code
+						class="webkit block show">-webkit-clip-path: <span class="functions">polygon(<code class="point" data-point="0">50% 0%</code>,
+					<code class="point" data-point="1">0% 100%</code>, <code class="point"
+						data-point="2">100% 100%</code>)</span>;
+					</code>
+					<code
+						class="unprefixed block show">clip-path: <span class="functions">polygon(<code class="point" data-point="0">50% 0%</code>,
+					<code class="point" data-point="1">0% 100%</code>, <code class="point"
+						data-point="2">100% 100%</code>)</span>;
+					</code>
+				</div>
+				<div class="grid panel fade-content">
+					<h2 style="font-size:18px;">浏览器兼容性支持</h2>
+					<p>
+						<a href="javascript:void(0)" class="browser_item chrome">Chrome 24+</a>
+						<a href="javascript:void(0)" class="browser_item safari">Safari 8+</a>
+						<a href="javascript:void(0)" class="browser_item opera">Opera 15+</a>
+						<a href="javascript:void(0)" class="browser_item firefox">不支持Firefox</a>
+						<a href="javascript:void(0)" class="browser_item ie9_10">不支持IE</a>
+					</p>
+				</div>
+			</div>
+			<div id="PARAMETER_DIV">
+				<div tabindex="-1" class="shapes vertical">
+					<ul></ul>
+				</div>
+				<div class="options">
+					<div class="grid panel fade-content">
+						<h2>演示背景图片</h2>
+						<div class="backgrounds">
+							<img src="static/image/pittsburgh.jpg">
+							<img src="static/image/fierenze.jpg">
+							<img src="static/image/sparkler.jpg">
+							<img src="static/image/miami.jpg">
+						</div>
+						<input type="url" name="background" id="custom_url" placeholder="请输入您图片的URL">
+
+						<br>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="static/js/flickity.pkgd.min.js"></script>
+	<script src="static/js/draggabilly.min.js"></script>
+	<script src="static/js/clip.js"></script>
+
+	<script>
+		$(function () {
+			console.clear();
+			$(".inp_bor").bind("input propertychange", function () {
+				var val = $(this).val();
+				$(".inp_borval").val(val)
+				$(".demo").attr("style", '--bor:' + val + 'px');
+			})
+			$(".inp_borval").bind("input propertychange", function () {
+				var val = $(this).val()
+				var newval = val.replace(/^(0+)|[^\d]+/g, '')
+				if (!newval) {
+					newval = 0;
+				}
+				$(this).val(newval);
+				$(".inp_bor").val(newval);
+				$(".demo").attr("style", '--bor:' + newval + 'px');
+
+			})
+			$(".inp_borval").change(function () {
+				var val = $(this).val();
+				var max = $(".inp_bor").attr("max");
+				if (parseInt(val) > parseInt(max)) {
+					$(this).val(max)
+				}
+			})
+
+			$(".inp_btn").click(function () {
+				var inp_wid = $(".inp_wid").val();
+				var inp_hei = $(".inp_hei").val();
+
+				if (inp_wid == '' || inp_wid == 0) {
+					$(".inp_wid").val(370);
+				}
+				if (inp_hei == '' || inp_hei == 0) {
+					$(".inp_hei").val(370);
+				}
+
+				handleReposition(inp_wid, inp_hei)
+				sizes(inp_wid, inp_hei);
+				$(".shapes").find(".gallery-cell.on").trigger("click")
+			})
+
+		})
+	</script>
+	<!-- http://tools.jb51.net/static/api/css3path/index.html
+	http://tools.jb51.net/static/api/CSSmatic/Generator.html
+	http://tools.jb51.net/static/api/CSSmatic/border_radius.html
+	http://tools.jb51.net/static/api/CSSmatic/box_shadow.html
+	http://tools.jb51.net/static/api/CSSmatic/noise_texture.html -->
+
+</body>
+
+</html>

@@ -1,0 +1,67 @@
+:root {
+    --el-aside-width: auto;
+
+
+    --co-menu-width: 200px;
+    --co-upload-picture-card-size: 148px;
+}
+
+
+.el-menu {
+    width: var(--co-menu-width);
+    --el-menu-border-color: transparent;
+
+    // border-right: 0;
+    &.el-menu--vertical {
+        min-height: 100%;
+    }
+}
+
+.el-dropdown {
+
+    .el-tooltip__trigger:focus-visible {
+        outline: unset;
+    }
+
+}
+
+.el-dropdown-menu {
+    .el-dropdown-menu__item {
+
+        &:hover,
+        &-active {
+            background-color: var(--el-dropdown-menuItem-hover-fill);
+            color: var(--el-dropdown-menuItem-hover-color);
+        }
+    }
+}
+
+.el-scrollbar {
+    // .el-scrollbar__view {
+    //     height: 100%;
+    // }
+
+    .el-scrollbar__bar {
+        z-index: 5;
+    }
+}
+
+.el-drawer__body {
+    --el-drawer-padding-primary: 0;
+}
+
+.el-upload-list {
+
+    &.el-upload-list--picture-card {
+        --el-upload-list-picture-card-size: var(--co-upload-picture-card-size);
+    }
+
+    .el-upload--picture-card {
+        --el-upload-picture-card-size: var(--co-upload-picture-card-size);
+    }
+
+}
+
+.el-message--error{
+    z-index:1000000!important;
+}
