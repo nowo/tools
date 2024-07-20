@@ -18,6 +18,12 @@ definePageMeta({
 })
 
 
+const config=useRuntimeConfig()
+
+// const baseUrl='/'
+const baseUrl=config.app.baseURL
+// console.log(import.meta.env.BASE_URL)
+
 const id = useRouteParam('id')
 
 const listData = ref([
@@ -95,7 +101,7 @@ if (id.value) {
     } else if (id.value === 'cdn') {
         type = 'cdn'
     }
-    if (type) data.iframe = `/iframe/${type}.html`;
+    if (type) data.iframe = `${baseUrl}iframe/${type}.html`;
 }
 </script>
 
