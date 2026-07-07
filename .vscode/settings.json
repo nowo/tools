@@ -41,7 +41,10 @@
         "antfu",
         "nowo",
         "nuxt",
+        "primeuix",
+        "primevue",
         "unocss",
-        "Vite"
+        "Vite",
+        "wzo"
     ]
 }

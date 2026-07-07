@@ -1,13 +1,2 @@
-export const appName = '（⊙ｏ⊙）'
-export const appDescription = '（⊙ｏ⊙）'
-
-// 后台管理路径
-export const appAdminPath = '/admin'
-
-// 分页全局配置
-export const paginationConfig = {
-    page: 1,
-    pageSize: 10,
-    pageSizes: [10, 20, 50, 100],
-    total: 0,
-}
+export const appName = '工具箱'
+export const appDescription = '前端开发常用的可视化小工具集合 —— CSS 渐变、阴影、圆角、正则、JSON'

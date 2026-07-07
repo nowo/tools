@@ -41,9 +41,9 @@ export default {
         // scope 类型（定义之后，可通过上下键选择）
         scopes: [
             ['components', '组件相关'],
-            ['hooks', 'hook 相关'],
+            ['composables', 'composables 相关'],
             ['utils', 'utils 相关'],
-            ['element-ui', '对 element-ui 的调整'],
+            ['tool', '工具页面相关'],
             ['styles', '样式相关'],
             ['deps', '项目依赖'],
             ['config', '配置相关'],

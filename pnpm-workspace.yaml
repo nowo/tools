@@ -1,0 +1,12 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - '@wzo/utils@0.0.10'
+shellEmulator: true
+trustPolicy: no-downgrade
+trustPolicyExclude:
+  # @babel/core（Nuxt 4 vite-builder 传递依赖）固定依赖 semver@6.3.1,
+  # pnpm 供应链策略将其标记为 trust downgrade。此为最小显式豁免。
+  - semver@6.3.1
