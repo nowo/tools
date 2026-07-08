@@ -70,7 +70,7 @@ export const tools: ToolItem[] = [
         no: '05',
         slug: 'clip-path',
         name: '剪贴路径',
-        desc: '拖拽节点自定义多边形 clip-path 裁剪。',
+        desc: '多边形拖拽 + 圆 / 椭圆 / 内矩形,可视化生成 clip-path。',
         preview: 'clip',
         to: '/tool/clip-path',
     },
