@@ -14,6 +14,6 @@ const { copy, copied } = useClipboard()
                 {{ copied ? '已复制' : '复制' }}
             </button>
         </div>
-        <pre class="text-13px text-ink leading-relaxed font-mono m-0 px-4 py-3.5 overflow-x-auto">{{ code }}</pre>
+        <pre class="text-13px text-ink leading-relaxed font-mono m-0 px-4 py-3.5 max-h-[60vh] overflow-auto">{{ code }}</pre>
     </div>
 </template>
