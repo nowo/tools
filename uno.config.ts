@@ -14,16 +14,16 @@ export default defineConfig({
 
     theme: {
         colors: {
-            // 语义色 token(设计稿:精密仪表盘 / 规格表风,亮色)
-            'ground': '#F1F3EF', // 纸感冷灰底
-            'panel': '#FFFFFF', // 卡片面
-            'ink': '#152019', // 近黑墨绿字
-            'muted': '#5C6A62', // 次要文字
-            'faint': '#8A968E', // 弱文字
-            'accent': '#0E8C6B', // 强调深青
-            'accent-ink': '#0A5C47', // 强调墨
-            'line': '#DCE2DB', // 分隔线
-            'line-soft': '#E7EBE5', // 更浅分隔线
+            // 语义色 token —— 亮色 / 暗色经 CSS 变量切换
+            'ground': 'var(--color-ground)', // 纸感冷灰底
+            'panel': 'var(--color-panel)', // 卡片面
+            'ink': 'var(--color-ink)', // 近黑墨绿字
+            'muted': 'var(--color-muted)', // 次要文字
+            'faint': 'var(--color-faint)', // 弱文字
+            'accent': 'var(--color-accent)', // 强调深青
+            'accent-ink': 'var(--color-accent-ink)', // 强调墨
+            'line': 'var(--color-line)', // 分隔线
+            'line-soft': 'var(--color-line-soft)' // 更浅分隔线
         },
         font: {
             // 系统字体栈(含苹方中文回退)+ 等宽 mono 承载技术标签

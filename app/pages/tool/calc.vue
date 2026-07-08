@@ -206,7 +206,7 @@ onMounted(() => setCursor(0))
             <!-- 计算器 -->
             <div class="mx-auto flex flex-col gap-4 max-w-460px w-full">
                 <!-- 显示屏(可编辑,支持光标定位) -->
-                <div class="px-5 py-4 rounded-14px bg-ink overflow-hidden" @click="inputEl?.focus()">
+                <div class="px-5 py-4 rounded-14px bg-[var(--color-display)] overflow-hidden" @click="inputEl?.focus()">
                     <div class="text-13px text-white/40 font-mono flex h-5 items-center justify-between">
                         <span class="text-10px text-accent/90 tracking-wide px-1.5 border border-white/15 rounded">{{ deg ? 'DEG' : 'RAD' }}</span>
                         <span class="truncate">{{ error ? '表达式错误' : (topExpr ? `${topExpr} =` : '') }}</span>

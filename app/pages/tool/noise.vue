@@ -29,7 +29,7 @@ const cssCode = computed(() => `background-image: ${bgImage.value};`)
         <div class="mt-8 gap-6 grid grid-cols-1 lg:grid-cols-[minmax(0,1fr)_360px]">
             <!-- 预览 + 代码 -->
             <div class="flex flex-col gap-4 min-w-0">
-                <div class="border border-line rounded-14px bg-white h-80" :style="{ backgroundImage: bgImage }" />
+                <div class="border border-line rounded-14px bg-[var(--color-bright-bg)] h-80" :style="{ backgroundImage: bgImage }" />
                 <CodeOutput :code="cssCode" />
             </div>
 

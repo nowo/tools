@@ -130,12 +130,12 @@ onMounted(() => {
                     <div class="pr-1 flex flex-col gap-2 max-h-80 overflow-y-auto">
                         <div v-for="(f, i) in fields" :key="i" class="flex gap-1.5 items-center">
                             <input v-model="f.key"
-                                class="text-13px text-ink px-2 py-1.5 outline-none border border-line rounded-8px bg-white shrink-0 w-20 focus:border-accent"
+                                class="text-13px text-ink px-2 py-1.5 outline-none border border-line rounded-8px bg-[var(--color-bright-bg)] shrink-0 w-20 focus:border-accent"
                                 placeholder="字段名">
                             <input v-model="f.value"
-                                class="text-13px text-ink font-mono px-2 py-1.5 outline-none border border-line rounded-8px bg-white flex-1 min-w-0 focus:border-accent"
+                                class="text-13px text-ink font-mono px-2 py-1.5 outline-none border border-line rounded-8px bg-[var(--color-bright-bg)] flex-1 min-w-0 focus:border-accent"
                                 placeholder="值 / {{ 函数 }}">
-                            <button class="text-11px text-muted font-mono px-2 py-1.5 border border-line rounded-8px bg-white shrink-0 transition hover:text-accent hover:border-accent" title="插入函数" @click="openFx($event, f)">
+                            <button class="text-11px text-muted font-mono px-2 py-1.5 border border-line rounded-8px bg-[var(--color-bright-bg)] shrink-0 transition hover:text-accent hover:border-accent" title="插入函数" @click="openFx($event, f)">
                                 fx
                             </button>
                             <button class="text-15px text-faint leading-none shrink-0 transition hover:text-ink disabled:opacity-30" :disabled="fields.length <= 1" @click="removeField(i)">
@@ -175,7 +175,7 @@ onMounted(() => {
                 <div class="flex flex-col gap-2">
                     <span class="text-12px text-faint tracking-wide font-mono uppercase">模板</span>
                     <textarea v-model="template" spellcheck="false"
-                        class="text-12px text-ink leading-relaxed font-mono px-3 py-2.5 outline-none border rounded-9px bg-white h-48 resize-y focus:border-accent"
+                        class="text-12px text-ink leading-relaxed font-mono px-3 py-2.5 outline-none border rounded-9px bg-[var(--color-bright-bg)] h-48 resize-y focus:border-accent"
                         :class="templateError ? 'border-red-300' : 'border-line'" />
                     <p v-if="templateError" class="text-11px text-red-500 m-0">
                         {{ templateError }}

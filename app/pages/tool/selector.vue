@@ -129,7 +129,7 @@ function copySel(s: string) {
         <ToolHeader id="selector" />
 
         <input v-model="query"
-            class="text-14px text-ink mt-8 px-4 py-2.5 outline-none border border-line rounded-10px bg-white max-w-md w-full focus:border-accent"
+            class="text-14px text-ink mt-8 px-4 py-2.5 outline-none border border-line rounded-10px bg-[var(--color-bright-bg)] max-w-md w-full focus:border-accent"
             :placeholder="`搜索 ${total} 个选择器 / 说明…`">
 
         <div class="mt-8 flex flex-col gap-8">

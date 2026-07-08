@@ -33,7 +33,7 @@ const cssCode = computed(() => `box-shadow: ${shadowValue.value};`)
             <!-- 预览 + 代码 -->
             <div class="flex flex-col gap-4 min-w-0">
                 <div class="flex border border-line rounded-14px bg-ground h-80 items-center justify-center">
-                    <div class="rounded-16px bg-white h-32 w-32" :style="{ boxShadow: shadowValue }" />
+                    <div class="rounded-16px bg-[var(--color-bright-bg)] h-32 w-32" :style="{ boxShadow: shadowValue }" />
                 </div>
                 <CodeOutput :code="cssCode" />
             </div>

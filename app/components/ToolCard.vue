@@ -17,10 +17,10 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
             class="text-10px text-accent-ink tracking-wider font-mono px-1.75 py-0.5 border border-accent/22 rounded-full bg-accent/10 right-3 top-3 absolute z-2">外链 ↗</span>
 
         <!-- 效果预览:按工具类型分支渲染 -->
-        <div class="preview border border-line-soft rounded-9px bg-[#FBFCFB] flex h-24 items-center justify-center overflow-hidden">
+        <div class="preview border border-line-soft rounded-9px bg-[var(--color-card-preview)] flex h-24 items-center justify-center overflow-hidden">
             <div v-if="tool.preview === 'gradient'" class="h-full w-full" style="background:linear-gradient(115deg,#0E8C6B,#7DD9BE 42%,#F0C36B 100%)" />
 
-            <div v-else-if="tool.preview === 'shadow'" class="rounded-12px bg-white h-46px w-46px" style="box-shadow:0 12px 22px -6px rgba(21,32,25,.42)" />
+            <div v-else-if="tool.preview === 'shadow'" class="rounded-12px bg-[var(--color-bright-bg)] h-46px w-46px" style="box-shadow:0 12px 22px -6px rgba(21,32,25,.42)" />
 
             <div v-else-if="tool.preview === 'radius'" class="border-2 border-ink h-52px w-74px" style="border-radius:24px 24px 4px 24px" />
 
@@ -68,11 +68,11 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
 }
 .tool-card:hover {
     transform: translateY(-4px);
-    border-color: #0e8c6b;
+    border-color: var(--color-accent);
     box-shadow: 0 14px 34px -20px rgba(14, 140, 107, 0.5);
 }
 .tool-card:hover .arrow {
-    color: #0e8c6b;
+    color: var(--color-accent);
     transform: translate(3px, -3px);
 }
 
@@ -83,19 +83,19 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
     font-family: var(--font-mono, ui-monospace, monospace);
     font-size: 12px;
     line-height: 1.7;
-    color: #152019;
+    color: var(--color-ink);
 }
-.code .k { color: #0a5c47; }
-.code .m { color: #8a968e; }
+.code .k { color: var(--color-accent-ink); }
+.code .m { color: var(--color-faint); }
 
 .keypad i {
     display: block;
     height: 15px;
     border-radius: 3px;
-    background: #e7ebe5;
+    background: var(--color-line-soft);
 }
 .keypad i.op {
-    background: #0e8c6b;
+    background: var(--color-accent);
     opacity: 0.85;
 }
 

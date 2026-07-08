@@ -1,4 +1,9 @@
 <script setup lang="ts">
+const colorMode = useColorMode()
+const isDark = computed(() => colorMode.preference === 'dark')
+function toggleDark() {
+    colorMode.preference = isDark.value ? 'light' : 'dark'
+}
 </script>
 
 <template>
@@ -10,7 +15,14 @@
                     <span class="text-15px text-ink tracking-tight font-600">工具箱</span>
                     <span class="text-11px text-faint tracking-[0.3em] font-mono uppercase">Toolbox</span>
                 </NuxtLink>
-                <span class="text-11px text-faint tracking-wide font-mono">纯前端 · 无需登录</span>
+                <div class="flex gap-3 items-center">
+                    <button
+                        class="text-11px text-faint tracking-wide font-mono px-2 py-1 border border-line rounded-md transition hover:text-muted hover:border-accent/30"
+                        @click="toggleDark">
+                        {{ isDark ? '☀ 亮色' : '☾ 暗色' }}
+                    </button>
+                    <span class="text-11px text-faint tracking-wide font-mono hidden sm:inline">纯前端 · 无需登录</span>
+                </div>
             </div>
         </header>
 

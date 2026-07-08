@@ -125,7 +125,7 @@ function addPoint() {
                             <polygon :points="svgPoints" fill="none" stroke="#0E8C6B" stroke-width="0.6" vector-effect="non-scaling-stroke" stroke-dasharray="2 2" />
                         </svg>
                         <div v-for="(p, i) in points" :key="i"
-                            class="border-2 border-accent rounded-full bg-white h-3.5 w-3.5 cursor-grab shadow-sm absolute touch-none active:cursor-grabbing -translate-x-1/2 -translate-y-1/2 hover:scale-125"
+                            class="border-2 border-accent rounded-full bg-[var(--color-bright-bg)] h-3.5 w-3.5 cursor-grab shadow-sm absolute touch-none active:cursor-grabbing -translate-x-1/2 -translate-y-1/2 hover:scale-125"
                             :style="{ left: `${p.x}%`, top: `${p.y}%` }"
                             title="拖动调整,双击删除"
                             @pointerdown="onDown(i, $event)"
