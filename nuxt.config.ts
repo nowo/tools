@@ -1,5 +1,25 @@
+import { definePreset } from '@primeuix/themes'
 import Aura from '@primeuix/themes/aura'
 import { appDescription } from './app/config/constant'
+
+// 基于 Aura,把 primary 色阶换成项目 teal(设计稿强调色 #0E8C6B)
+const ToolboxPreset = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: '#eafaf4',
+            100: '#cbf0e2',
+            200: '#9ee0c9',
+            300: '#66cbab',
+            400: '#33b08c',
+            500: '#0e8c6b',
+            600: '#0c7659',
+            700: '#0a5f49',
+            800: '#0a4c3b',
+            900: '#093f31',
+            950: '#04241c',
+        },
+    },
+})
 
 export default defineNuxtConfig({
     modules: [
@@ -13,7 +33,7 @@ export default defineNuxtConfig({
     primevue: {
         options: {
             theme: {
-                preset: Aura,
+                preset: ToolboxPreset,
                 options: {
                     // 暗色模式跟随 .dark class(与 @nuxtjs/color-mode 对齐)
                     darkModeSelector: '.dark',
