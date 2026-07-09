@@ -31,6 +31,7 @@ const presets: { name: string, pts: [number, number][] }[] = [
 const points = ref<Pt[]>(presets[4]!.pts.map(([x, y]) => ({ x, y })))
 const containerEl = ref<HTMLElement>()
 const dragging = ref(-1)
+const flashIndex = ref(-1)
 
 // —— 圆 / 椭圆 / 内矩形 ——
 const circle = reactive({ r: 45, cx: 50, cy: 50 })
@@ -84,6 +85,13 @@ const gridLines: GridLine[] = (() => {
     return arr
 })()
 
+// 节点配色:每个节点一个颜色,CSS 坐标段同色联动
+const colors = ['#e2463f', '#e8802b', '#d9a520', '#4fae4f', '#0e8c6b', '#3b82c4', '#7b5cd6', '#c4519e', '#0f9e9e', '#9a6a3a']
+function colorOf(i: number) {
+    return colors[i % colors.length]!
+}
+const { copy, copied } = useClipboard()
+
 function setPreset(pts: [number, number][]) {
     points.value = pts.map(([x, y]) => ({ x, y }))
 }
@@ -104,7 +112,21 @@ function onMove(e: PointerEvent) {
     p.y = clampPct(((e.clientY - r.top) / r.height) * 100)
 }
 function onUp() {
+    const i = dragging.value
     dragging.value = -1
+    if (i < 0) {
+        return
+    }
+    // 拖动结束:让 CSS 对应坐标段闪一下光晕,快速定位改动
+    flashIndex.value = -1
+    nextTick(() => {
+        flashIndex.value = i
+        setTimeout(() => {
+            if (flashIndex.value === i) {
+                flashIndex.value = -1
+            }
+        }, 800)
+    })
 }
 function removePoint(i: number) {
     if (points.value.length > 3) {
@@ -145,8 +167,8 @@ function addPoint() {
                             <polygon :points="svgPoints" fill="none" stroke="#0E8C6B" stroke-width="0.6" vector-effect="non-scaling-stroke" stroke-dasharray="2 2" />
                         </svg>
                         <div v-for="(p, i) in points" :key="i"
-                            class="border-2 border-accent rounded-full bg-[var(--color-bright-bg)] h-3.5 w-3.5 cursor-grab shadow-sm absolute touch-none active:cursor-grabbing -translate-x-1/2 -translate-y-1/2 hover:scale-125"
-                            :style="{ left: `${p.x}%`, top: `${p.y}%` }"
+                            class="border-2 border-white rounded-full h-3.5 w-3.5 cursor-grab shadow-sm absolute touch-none active:cursor-grabbing -translate-x-1/2 -translate-y-1/2 hover:scale-125"
+                            :style="{ left: `${p.x}%`, top: `${p.y}%`, background: colorOf(i) }"
                             title="拖动调整,双击删除"
                             @pointerdown="onDown(i, $event)"
                             @pointermove="onMove"
@@ -154,7 +176,19 @@ function addPoint() {
                             @dblclick="removePoint(i)" />
                     </template>
                 </div>
-                <CodeOutput :code="cssCode" />
+                <!-- 多边形:CSS 坐标段与节点同色联动;其他类型用普通输出 -->
+                <div v-if="type === 'polygon'" class="border border-line rounded-12px bg-panel overflow-hidden">
+                    <div class="px-4 py-2.5 border-b border-line-soft flex items-center justify-between">
+                        <span class="text-11px text-faint tracking-wide font-mono uppercase">CSS</span>
+                        <button class="text-12px px-2.5 py-1 border rounded-md inline-flex gap-1.5 transition items-center"
+                            :class="copied ? 'text-accent border-accent/40 bg-accent/5' : 'text-muted border-line hover:text-ink'"
+                            @click="copy(cssCode)">
+                            {{ copied ? '已复制' : '复制' }}
+                        </button>
+                    </div>
+                    <pre class="text-13px text-ink leading-relaxed font-mono m-0 px-4 py-3.5 overflow-x-auto">clip-path: polygon(<template v-for="(p, i) in points" :key="i"><span :class="flashIndex === i ? 'seg-flash' : ''" :style="{ color: colorOf(i) }">{{ p.x }}% {{ p.y }}%</span><template v-if="i < points.length - 1">, </template></template>);</pre>
+                </div>
+                <CodeOutput v-else :code="cssCode" />
             </div>
 
             <!-- 控制面板 -->
@@ -183,7 +217,7 @@ function addPoint() {
                         </button>
                     </div>
                     <p class="text-11px text-faint leading-relaxed m-0">
-                        拖动白色节点调整形状,<b class="text-muted">双击</b>节点删除(保留至少 3 个)。
+                        拖动彩色节点调整形状(松手后 CSS 对应段会闪光提示),<b class="text-muted">双击</b>节点删除(保留至少 3 个)。
                     </p>
                 </template>
 
@@ -220,3 +254,21 @@ function addPoint() {
         </div>
     </div>
 </template>
+
+<style scoped>
+/* 拖动结束后,CSS 对应坐标段用该段颜色闪一下光晕 */
+@keyframes segFlash {
+    0% {
+        box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 35%, transparent);
+        background: color-mix(in srgb, currentColor 22%, transparent);
+    }
+    100% {
+        box-shadow: 0 0 0 3px transparent;
+        background: transparent;
+    }
+}
+.seg-flash {
+    border-radius: 4px;
+    animation: segFlash 0.8s ease-out;
+}
+</style>
