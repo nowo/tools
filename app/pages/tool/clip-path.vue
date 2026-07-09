@@ -117,7 +117,7 @@ function onUp() {
     if (i < 0) {
         return
     }
-    // 拖动结束:让 CSS 对应坐标段闪一下光晕,快速定位改动
+    // 拖动结束:让高亮层对应坐标段闪一下光晕,快速定位改动
     flashIndex.value = -1
     nextTick(() => {
         flashIndex.value = i
@@ -138,6 +138,193 @@ function addPoint() {
     const b = points.value[1] ?? a
     points.value.splice(1, 0, { x: Math.round((a.x + b.x) / 2), y: Math.round((a.y + b.y) / 2) })
 }
+
+// —— CSS 直接编辑:textarea 双向同步,实时解析回状态并切换类型 ——
+const RE_PREFIX = /^clip-path\s*:/i
+const RE_TRAIL = /;+\s*$/
+const RE_FN = /^(\w+)\s*\((.*)\)$/s
+const RE_NUMS = /-?\d+(?:\.\d+)?/g
+const RE_AT = /\s+at\s+/i
+const RE_ROUND = /\bround\b(.*)$/i
+
+const draft = ref('')
+const parseErr = ref('')
+// 聚焦编辑中:此时抑制 shape→text 回写,避免打断光标
+const editingCss = ref(false)
+
+function clamp(v: number, max = 100) {
+    return Math.min(max, Math.max(0, v))
+}
+function parsePolygon(inner: string) {
+    const pts = inner.split(',').map(s => s.trim()).filter(Boolean).map((seg) => {
+        const n = seg.match(RE_NUMS)
+        if (!n || n.length < 2) {
+            throw new Error(`坐标格式有误:「${seg}」应形如 50% 0`)
+        }
+        return { x: clamp(Number(n[0])), y: clamp(Number(n[1])) }
+    })
+    if (pts.length < 3) {
+        throw new Error('多边形至少需要 3 个点')
+    }
+    points.value = pts
+    type.value = 'polygon'
+}
+function parseCircle(inner: string) {
+    const [rad, center] = inner.split(RE_AT)
+    const r = rad?.match(RE_NUMS)
+    if (!r) {
+        throw new Error('circle 半径需为数值,如 circle(45% at 50% 50%)')
+    }
+    circle.r = clamp(Math.round(Number(r[0])))
+    const c = center?.match(RE_NUMS)
+    if (c && c.length >= 2) {
+        circle.cx = clamp(Math.round(Number(c[0])))
+        circle.cy = clamp(Math.round(Number(c[1])))
+    }
+    type.value = 'circle'
+}
+function parseEllipse(inner: string) {
+    const [rad, center] = inner.split(RE_AT)
+    const r = rad?.match(RE_NUMS)
+    if (!r || r.length < 2) {
+        throw new Error('ellipse 需两个半径,如 ellipse(45% 30% at 50% 50%)')
+    }
+    ellipse.rx = clamp(Math.round(Number(r[0])))
+    ellipse.ry = clamp(Math.round(Number(r[1])))
+    const c = center?.match(RE_NUMS)
+    if (c && c.length >= 2) {
+        ellipse.cx = clamp(Math.round(Number(c[0])))
+        ellipse.cy = clamp(Math.round(Number(c[1])))
+    }
+    type.value = 'ellipse'
+}
+function parseInset(inner: string) {
+    let main = inner
+    const rm = RE_ROUND.exec(inner)
+    let round = 0
+    if (rm) {
+        main = inner.slice(0, rm.index)
+        const rn = rm[1]!.match(RE_NUMS)
+        if (rn) {
+            round = Number(rn[0])
+        }
+    }
+    const nums = main.match(RE_NUMS)?.map(Number)
+    if (!nums || nums.length < 1) {
+        throw new Error('inset 至少需要 1 个数值')
+    }
+    // CSS 简写:1→四边,2→上下/左右,3→上/左右/下,4→上/右/下/左
+    let t: number, r: number, b: number, l: number
+    if (nums.length === 1) {
+        t = r = b = l = nums[0]!
+    } else if (nums.length === 2) {
+        t = b = nums[0]!
+        r = l = nums[1]!
+    } else if (nums.length === 3) {
+        t = nums[0]!
+        r = l = nums[1]!
+        b = nums[2]!
+    } else {
+        [t, r, b, l] = nums as [number, number, number, number]
+    }
+    inset.top = clamp(Math.round(t), 50)
+    inset.right = clamp(Math.round(r), 50)
+    inset.bottom = clamp(Math.round(b), 50)
+    inset.left = clamp(Math.round(l), 50)
+    inset.round = clamp(Math.round(round), 50)
+    type.value = 'inset'
+}
+// 解析并应用到 shape,返回错误信息(成功为空串)
+function applyCss(text: string): string {
+    const s = text.trim().replace(RE_PREFIX, '').replace(RE_TRAIL, '').trim()
+    if (!s) {
+        return '内容为空'
+    }
+    const m = RE_FN.exec(s)
+    if (!m) {
+        return '无法解析,应形如 polygon(…) / circle(…) / ellipse(…) / inset(…)'
+    }
+    const fn = m[1]!.toLowerCase()
+    const inner = m[2]!.trim()
+    try {
+        if (fn === 'polygon') {
+            parsePolygon(inner)
+        } else if (fn === 'circle') {
+            parseCircle(inner)
+        } else if (fn === 'ellipse') {
+            parseEllipse(inner)
+        } else if (fn === 'inset') {
+            parseInset(inner)
+        } else {
+            throw new Error(`不支持的类型:${fn}`)
+        }
+        return ''
+    } catch (err) {
+        return (err as Error).message
+    }
+}
+
+// shape 变化(拖动 / 滑块 / 预设 / 切类型)→ 回写 textarea,仅在未聚焦编辑时
+watch(cssCode, (v) => {
+    if (!editingCss.value) {
+        draft.value = v
+    }
+}, { immediate: true })
+
+// 编辑 textarea → 防抖实时解析应用(仅聚焦编辑时,避免程序化回写触发)
+watchDebounced(draft, (v) => {
+    if (editingCss.value) {
+        parseErr.value = applyCss(v)
+    }
+}, { debounce: 300 })
+
+function onCssFocus() {
+    editingCss.value = true
+}
+function onCssBlur() {
+    editingCss.value = false
+    parseErr.value = ''
+    // 失焦:应用最新输入(补上未及防抖的那次),再规范化为标准 CSS
+    applyCss(draft.value)
+    draft.value = cssCode.value
+}
+
+// 语法高亮:对 textarea 里的原始文本本身着色(逐字符对齐,输入过程也不错位)
+// polygon 的每对坐标按序号取节点同色;其他类型保持默认 ink 色
+const RE_HL_AMP = /&/g
+const RE_HL_LT = /</g
+const RE_HL_GT = />/g
+const RE_HL_POLY = /^([\s\S]*?polygon\s*\()([\s\S]*)$/i
+const RE_HL_TAIL = /\)\s*(?:;\s*)?$/
+const RE_HL_COMMA = /(,)/
+function escapeHtml(s: string) {
+    return s.replace(RE_HL_AMP, '&amp;').replace(RE_HL_LT, '&lt;').replace(RE_HL_GT, '&gt;')
+}
+const highlighted = computed(() => {
+    const text = draft.value
+    const m = RE_HL_POLY.exec(text)
+    if (!m) {
+        return escapeHtml(text)
+    }
+    const prefix = m[1]!
+    let inner = m[2]!
+    let suffix = ''
+    const tail = RE_HL_TAIL.exec(inner)
+    if (tail) {
+        suffix = inner.slice(tail.index)
+        inner = inner.slice(0, tail.index)
+    }
+    let idx = 0
+    const colored = inner.split(RE_HL_COMMA).map((part) => {
+        if (part === ',' || part.trim() === '') {
+            return escapeHtml(part)
+        }
+        const i = idx++
+        const cls = i === flashIndex.value ? ' class="seg-flash"' : ''
+        return `<span${cls} style="color:${colorOf(i)}">${escapeHtml(part)}</span>`
+    }).join('')
+    return escapeHtml(prefix) + colored + escapeHtml(suffix)
+})
 </script>
 
 <template>
@@ -176,19 +363,29 @@ function addPoint() {
                             @dblclick="removePoint(i)" />
                     </template>
                 </div>
-                <!-- 多边形:CSS 坐标段与节点同色联动;其他类型用普通输出 -->
-                <div v-if="type === 'polygon'" class="border border-line rounded-12px bg-panel overflow-hidden">
+                <!-- CSS:始终可直接编辑,双向实时同步;可全选、粘贴任意 clip-path -->
+                <div class="border border-line rounded-12px bg-panel overflow-hidden">
                     <div class="px-4 py-2.5 border-b border-line-soft flex items-center justify-between">
-                        <span class="text-11px text-faint tracking-wide font-mono uppercase">CSS</span>
+                        <span class="text-11px text-faint tracking-wide font-mono uppercase">CSS · 可编辑</span>
                         <button class="text-12px px-2.5 py-1 border rounded-md inline-flex gap-1.5 transition items-center"
                             :class="copied ? 'text-accent border-accent/40 bg-accent/5' : 'text-muted border-line hover:text-ink'"
                             @click="copy(cssCode)">
                             {{ copied ? '已复制' : '复制' }}
                         </button>
                     </div>
-                    <pre class="text-13px text-ink leading-relaxed font-mono m-0 px-4 py-3.5 overflow-x-auto">clip-path: polygon(<template v-for="(p, i) in points" :key="i"><span :class="flashIndex === i ? 'seg-flash' : ''" :style="{ color: colorOf(i) }">{{ p.x }}% {{ p.y }}%</span><template v-if="i < points.length - 1">, </template></template>);</pre>
+                    <!-- 透明 textarea 叠在彩色 pre 上:始终有颜色,又保留原生编辑/全选/光标 -->
+                    <div class="ce-wrap">
+                        <!-- eslint-disable-next-line vue/no-v-html -->
+                        <pre class="ce-layer ce-pre" aria-hidden="true" v-html="highlighted" />
+                        <textarea v-model="draft" spellcheck="false"
+                            class="ce-layer ce-input"
+                            @focus="onCssFocus"
+                            @blur="onCssBlur" />
+                    </div>
+                    <p class="text-11px text-faint leading-relaxed m-0 px-4 pb-3" :class="parseErr ? '!text-[#e2463f]' : ''">
+                        {{ parseErr || '可直接编辑或粘贴 clip-path,支持 polygon / circle / ellipse / inset,自动切换类型。' }}
+                    </p>
                 </div>
-                <CodeOutput v-else :code="cssCode" />
             </div>
 
             <!-- 控制面板 -->
@@ -217,7 +414,7 @@ function addPoint() {
                         </button>
                     </div>
                     <p class="text-11px text-faint leading-relaxed m-0">
-                        拖动彩色节点调整形状(松手后 CSS 对应段会闪光提示),<b class="text-muted">双击</b>节点删除(保留至少 3 个)。
+                        拖动彩色节点调整形状,<b class="text-muted">双击</b>节点删除(保留至少 3 个)。也可在下方 CSS 框直接编辑。
                     </p>
                 </template>
 
@@ -256,7 +453,48 @@ function addPoint() {
 </template>
 
 <style scoped>
-/* 拖动结束后,CSS 对应坐标段用该段颜色闪一下光晕 */
+/* 彩色高亮层与输入层严格同字体 / 同内边距 / 同换行,确保逐字符对齐 */
+.ce-wrap {
+    position: relative;
+}
+.ce-layer {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 0;
+    padding: 14px 16px;
+    border: 0;
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 13px;
+    line-height: 1.6;
+    letter-spacing: 0;
+    tab-size: 2;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+.ce-pre {
+    min-height: 3.4em;
+    color: var(--color-ink);
+    pointer-events: none;
+}
+.ce-input {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    resize: none;
+    overflow: hidden;
+    background: transparent;
+    color: transparent;
+    caret-color: var(--color-ink);
+    -webkit-text-fill-color: transparent;
+    outline: none;
+}
+.ce-input::selection {
+    /* 选区高亮盖在彩色文字上,全选可见 */
+    background: color-mix(in srgb, var(--color-accent) 26%, transparent);
+}
+
+/* 拖动松手后,高亮层对应坐标段用该段颜色闪一下光晕(v-html 注入,需 :deep 穿透) */
 @keyframes segFlash {
     0% {
         box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 35%, transparent);
@@ -267,7 +505,7 @@ function addPoint() {
         background: transparent;
     }
 }
-.seg-flash {
+.ce-pre :deep(.seg-flash) {
     border-radius: 4px;
     animation: segFlash 0.8s ease-out;
 }
