@@ -4,6 +4,8 @@ interface Field { key: string, value: string }
 const RE_NUM_LITERAL = /^-?\d+(?:\.\d+)?$/
 const RE_QUOTE = /'/g
 const exampleTag = '{{email()}}'
+const exprTag = '{{index()+1}}'
+const braces = '{{}}'
 
 // 可点击插入的函数(fx Popover),带签名 / 说明 / 默认值
 interface FuncItem { label: string, tag: string, sig: string, desc: string, def?: string }
@@ -78,9 +80,28 @@ function genOutput() {
 
 const fxPopover = ref()
 const fxField = ref<Field | null>(null)
+const fxSearch = ref('')
+const fxSearchEl = ref<HTMLInputElement>()
+// 按名称 / 签名 / 说明 / 默认值过滤,空查询显示全部
+const filteredFuncs = computed(() => {
+    const q = fxSearch.value.trim().toLowerCase()
+    if (!q) {
+        return funcs
+    }
+    return funcs.filter(fn =>
+        fn.label.toLowerCase().includes(q)
+        || fn.sig.toLowerCase().includes(q)
+        || fn.desc.toLowerCase().includes(q)
+        || (fn.def?.toLowerCase().includes(q) ?? false),
+    )
+})
 function openFx(e: Event, f: Field) {
     fxField.value = f
+    fxSearch.value = ''
     fxPopover.value?.toggle(e)
+}
+function onFxShow() {
+    nextTick(() => fxSearchEl.value?.focus())
 }
 function pickFunc(fn: FuncItem) {
     if (fxField.value) {
@@ -144,23 +165,33 @@ onMounted(() => {
                         </div>
                     </div>
 
-                    <Popover ref="fxPopover">
-                        <div class="flex flex-col max-h-80 w-72 overflow-y-auto">
-                            <button v-for="fn in funcs" :key="fn.label"
-                                class="px-3 py-2 text-left rounded-8px transition hover:bg-line-soft/50"
-                                @click="pickFunc(fn)">
-                                <div class="flex gap-2 items-baseline justify-between">
-                                    <span class="text-13px text-ink font-500">{{ fn.label }}</span>
-                                    <span class="text-11px text-accent-ink font-mono">{{ fn.sig }}</span>
-                                </div>
-                                <div class="text-11px text-faint leading-snug mt-0.5">
-                                    {{ fn.desc }}<span v-if="fn.def"> · {{ fn.def }}</span>
-                                </div>
-                            </button>
+                    <Popover ref="fxPopover" @show="onFxShow">
+                        <div class="w-72">
+                            <div class="p-2 border-b border-line-soft">
+                                <input ref="fxSearchEl" v-model="fxSearch" spellcheck="false"
+                                    class="text-13px text-ink px-2.5 py-1.5 outline-none border border-line rounded-8px bg-[var(--color-bright-bg)] w-full focus:border-accent"
+                                    placeholder="搜索函数(名称 / 签名 / 说明)…">
+                            </div>
+                            <div class="flex flex-col max-h-72 overflow-y-auto">
+                                <button v-for="fn in filteredFuncs" :key="fn.label"
+                                    class="px-3 py-2 text-left rounded-8px transition hover:bg-line-soft/50"
+                                    @click="pickFunc(fn)">
+                                    <div class="flex gap-2 items-baseline justify-between">
+                                        <span class="text-13px text-ink font-500">{{ fn.label }}</span>
+                                        <span class="text-11px text-accent-ink font-mono">{{ fn.sig }}</span>
+                                    </div>
+                                    <div class="text-11px text-faint leading-snug mt-0.5">
+                                        {{ fn.desc }}<span v-if="fn.def"> · {{ fn.def }}</span>
+                                    </div>
+                                </button>
+                                <p v-if="!filteredFuncs.length" class="text-12px text-faint m-0 px-3 py-4 text-center">
+                                    无匹配函数
+                                </p>
+                            </div>
                         </div>
                     </Popover>
                     <p class="text-11px text-faint leading-relaxed m-0">
-                        值填函数(如 <span class="font-mono">{{ exampleTag }}</span>)则生成,填普通内容作静态值,留空为 <span class="font-mono">null</span>。
+                        值填函数(如 <span class="font-mono">{{ exampleTag }}</span>)则生成;<span class="font-mono">{{ braces }}</span> 内可写 JS 表达式,如 <span class="font-mono">{{ exprTag }}</span>、字符串拼接。填普通内容作静态值,留空为 <span class="font-mono">null</span>。
                     </p>
                 </div>
 
