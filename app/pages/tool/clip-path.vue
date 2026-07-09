@@ -72,6 +72,18 @@ const clipValue = computed(() => {
 const svgPoints = computed(() => points.value.map(p => `${p.x},${p.y}`).join(' '))
 const cssCode = computed(() => `clip-path: ${clipValue.value};`)
 
+// 预览背景网格:5% 虚线(line-soft)+ 10% 实线(line),辅助把节点对到整值
+interface GridLine { x1: number, y1: number, x2: number, y2: number, major: boolean }
+const gridLines: GridLine[] = (() => {
+    const arr: GridLine[] = []
+    for (let v = 5; v < 100; v += 5) {
+        const major = v % 10 === 0
+        arr.push({ x1: v, y1: 0, x2: v, y2: 100, major })
+        arr.push({ x1: 0, y1: v, x2: 100, y2: v, major })
+    }
+    return arr
+})()
+
 function setPreset(pts: [number, number][]) {
     points.value = pts.map(([x, y]) => ({ x, y }))
 }
@@ -115,6 +127,14 @@ function addPoint() {
             <div class="flex flex-col gap-4 min-w-0">
                 <div ref="containerEl"
                     class="mx-auto border border-line rounded-14px bg-ground max-w-440px w-full aspect-square relative touch-none">
+                    <!-- 背景网格:5% 虚线 + 10% 实线,辅助对齐 -->
+                    <svg class="rounded-14px h-full w-full pointer-events-none inset-0 absolute" viewBox="0 0 100 100" preserveAspectRatio="none">
+                        <line v-for="(l, i) in gridLines" :key="i"
+                            :x1="l.x1" :y1="l.y1" :x2="l.x2" :y2="l.y2"
+                            :stroke="l.major ? 'var(--color-line)' : 'var(--color-line-soft)'"
+                            :stroke-dasharray="l.major ? undefined : '2 2'"
+                            stroke-width="0.3" />
+                    </svg>
                     <!-- 被裁剪的图形:单独一层裹住做圆角裁剪,手柄层不裁,避免边缘节点被切 -->
                     <div class="rounded-14px inset-0 absolute overflow-hidden">
                         <div class="inset-0 absolute" style="background:linear-gradient(135deg,#0E8C6B,#7DD9BE 55%,#F0C36B)" :style="{ clipPath: clipValue }" />
