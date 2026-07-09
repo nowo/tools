@@ -42,6 +42,10 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
 
             <pre v-else-if="tool.preview === 'regex'" class="code"><span class="m">/</span>^\d<span class="k">{3}</span>-\d<span class="k">{4}</span>$<span class="m">/</span></pre>
 
+            <div v-else-if="tool.preview === 'color'" class="rounded-8px flex h-40px w-88px overflow-hidden">
+                <i v-for="c in ['#0E8C6B', '#33B08C', '#7DD9BE', '#F0C36B', '#E8802B']" :key="c" class="flex-1 block" :style="{ background: c }" />
+            </div>
+
             <pre v-else class="code"><span class="m">.card</span> &gt; <span class="m">a</span><span class="k">:hover</span> {
   <span class="k">color</span>: teal;
 }</pre>

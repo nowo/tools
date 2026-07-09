@@ -8,6 +8,7 @@ export type ToolPreview
         | 'json'
         | 'regex'
         | 'selector'
+        | 'color'
 
 export interface ToolItem {
     /** 路由 id / 唯一标识,如 'gradient' */
@@ -109,5 +110,14 @@ export const tools: ToolItem[] = [
         desc: 'CSS 选择器语法速查,含说明、示例与一键复制。',
         preview: 'selector',
         to: '/tool/selector',
+    },
+    {
+        id: 'color',
+        no: '10',
+        slug: 'color',
+        name: '颜色工具',
+        desc: 'HEX / RGB / HSL / OKLCH 互转、明暗阶与 WCAG 对比度检查。',
+        preview: 'color',
+        to: '/tool/color',
     },
 ]
