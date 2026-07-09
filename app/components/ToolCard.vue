@@ -46,6 +46,11 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
                 <i v-for="c in ['#0E8C6B', '#33B08C', '#7DD9BE', '#F0C36B', '#E8802B']" :key="c" class="flex-1 block" :style="{ background: c }" />
             </div>
 
+            <svg v-else-if="tool.preview === 'easing'" width="76" height="52" viewBox="0 0 100 100" preserveAspectRatio="none">
+                <line x1="0" y1="100" x2="100" y2="0" stroke="var(--color-line)" stroke-width="2" stroke-dasharray="5 5" />
+                <path d="M0 100 C 42 100, 58 0, 100 0" fill="none" stroke="var(--color-accent)" stroke-width="5" vector-effect="non-scaling-stroke" stroke-linecap="round" />
+            </svg>
+
             <pre v-else class="code"><span class="m">.card</span> &gt; <span class="m">a</span><span class="k">:hover</span> {
   <span class="k">color</span>: teal;
 }</pre>

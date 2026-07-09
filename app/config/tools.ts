@@ -9,6 +9,7 @@ export type ToolPreview
         | 'regex'
         | 'selector'
         | 'color'
+        | 'easing'
 
 export interface ToolItem {
     /** 路由 id / 唯一标识,如 'gradient' */
@@ -119,5 +120,14 @@ export const tools: ToolItem[] = [
         desc: 'HEX / RGB / HSL / OKLCH 互转、明暗阶与 WCAG 对比度检查。',
         preview: 'color',
         to: '/tool/color',
+    },
+    {
+        id: 'easing',
+        no: '11',
+        slug: 'cubic-bezier',
+        name: '缓动曲线',
+        desc: '拖拽控制点编辑 cubic-bezier,实时小球预览与预设。',
+        preview: 'easing',
+        to: '/tool/easing',
     },
 ]
