@@ -23,7 +23,7 @@ export default defineConfig({
             'accent': 'var(--color-accent)', // 强调深青
             'accent-ink': 'var(--color-accent-ink)', // 强调墨
             'line': 'var(--color-line)', // 分隔线
-            'line-soft': 'var(--color-line-soft)' // 更浅分隔线
+            'line-soft': 'var(--color-line-soft)', // 更浅分隔线
         },
         font: {
             // 系统字体栈(含苹方中文回退)+ 等宽 mono 承载技术标签

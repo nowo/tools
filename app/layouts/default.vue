@@ -16,8 +16,7 @@ function toggleDark() {
                     <span class="text-11px text-faint tracking-[0.3em] font-mono uppercase">Toolbox</span>
                 </NuxtLink>
                 <div class="flex gap-3 items-center">
-                    <button
-                        class="text-11px text-faint tracking-wide font-mono px-2 py-1 border border-line rounded-md transition hover:text-muted hover:border-accent/30"
+                    <button class="text-11px text-faint tracking-wide font-mono px-2 py-1 border border-line rounded-md transition hover:text-muted hover:border-accent/30"
                         @click="toggleDark">
                         {{ isDark ? '☀ 亮色' : '☾ 暗色' }}
                     </button>

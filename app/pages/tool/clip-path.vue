@@ -116,8 +116,8 @@ function addPoint() {
                 <div ref="containerEl"
                     class="mx-auto border border-line rounded-14px bg-ground max-w-440px w-full aspect-square relative touch-none">
                     <!-- 被裁剪的图形:单独一层裹住做圆角裁剪,手柄层不裁,避免边缘节点被切 -->
-                    <div class="absolute inset-0 rounded-14px overflow-hidden">
-                        <div class="absolute inset-0" style="background:linear-gradient(135deg,#0E8C6B,#7DD9BE 55%,#F0C36B)" :style="{ clipPath: clipValue }" />
+                    <div class="rounded-14px inset-0 absolute overflow-hidden">
+                        <div class="inset-0 absolute" style="background:linear-gradient(135deg,#0E8C6B,#7DD9BE 55%,#F0C36B)" :style="{ clipPath: clipValue }" />
                     </div>
                     <!-- 多边形专属:轮廓 + 可拖拽节点 -->
                     <template v-if="type === 'polygon'">

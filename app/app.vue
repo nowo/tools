@@ -1,7 +1,7 @@
 <script setup lang="ts">
-const colorMode = useColorMode()
-const isDark = computed(() => colorMode.preference === 'dark')
-function toggleDark() { colorMode.preference = isDark.value ? 'light' : 'dark' }
+// const colorMode = useColorMode()
+// const isDark = computed(() => colorMode.preference === 'dark')
+// function toggleDark() { colorMode.preference = isDark.value ? 'light' : 'dark' }
 
 useHead({
     title: appName,

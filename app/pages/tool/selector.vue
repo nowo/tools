@@ -142,8 +142,7 @@ function copySel(s: string) {
                         class="group px-3.5 py-2.5 border border-line rounded-10px bg-panel transition hover:border-accent">
                         <div class="flex gap-2 items-baseline justify-between">
                             <code class="text-13px text-accent-ink font-mono select-text">{{ it.sel }}</code>
-                            <button
-                                class="text-10px shrink-0 transition cursor-pointer"
+                            <button class="text-10px shrink-0 cursor-pointer transition"
                                 :class="copied === it.sel ? 'text-accent' : 'text-faint opacity-0 hover:text-accent group-hover:opacity-100'"
                                 :title="`复制 ${it.sel}`"
                                 @click="copySel(it.sel)">
