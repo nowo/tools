@@ -51,6 +51,9 @@ const dest = computed(() => props.tool.to ?? props.tool.href ?? '/')
                 <path d="M0 100 C 42 100, 58 0, 100 0" fill="none" stroke="var(--color-accent)" stroke-width="5" vector-effect="non-scaling-stroke" stroke-linecap="round" />
             </svg>
 
+            <pre v-else-if="tool.preview === 'codec'" class="code"><span class="k">Base64</span>
+SGVsbG8g<span class="m">·</span>世界</pre>
+
             <pre v-else class="code"><span class="m">.card</span> &gt; <span class="m">a</span><span class="k">:hover</span> {
   <span class="k">color</span>: teal;
 }</pre>

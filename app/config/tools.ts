@@ -10,6 +10,7 @@ export type ToolPreview
         | 'selector'
         | 'color'
         | 'easing'
+        | 'codec'
 
 export interface ToolItem {
     /** 路由 id / 唯一标识,如 'gradient' */
@@ -129,5 +130,14 @@ export const tools: ToolItem[] = [
         desc: '拖拽控制点编辑 cubic-bezier,实时小球预览与预设。',
         preview: 'easing',
         to: '/tool/easing',
+    },
+    {
+        id: 'codec',
+        no: '12',
+        slug: 'encode',
+        name: '编码转换',
+        desc: 'Base64 / URL / HTML 实体编解码,以及 JWT 解码。',
+        preview: 'codec',
+        to: '/tool/codec',
     },
 ]
